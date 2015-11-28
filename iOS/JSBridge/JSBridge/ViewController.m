@@ -104,6 +104,7 @@ static JSBridge *singleTonBridge = nil;
     
     [bridge send:@"testJavascriptHandler" data:@{ @"foo":@"before ready" } responseCallback:nil];
     
+    //加载html文件
     [self loadIndexFile];
     
     [bridge send:nil data:@"A string sent from ObjC after Webview has loaded." responseCallback:nil];    

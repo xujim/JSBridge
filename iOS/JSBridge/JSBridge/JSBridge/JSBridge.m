@@ -117,6 +117,7 @@
     }
 }
 
+//nativemodeule必须继承JSBridgeBase
 -(NSObject *)getNativeModuleFromName:(NSString *)name webView:(UIWebView *)webView {
     NSObject *nativeModule	= [nativeModules objectForKey:name];
     if(nativeModule == nil) {
@@ -159,6 +160,7 @@
     RELEASE_MEM(retValue);
 }
 
+//从js调用native，可以设置回调函数，注册event
 -(void)processEventHandler:(UIWebView *)webView message:(NSDictionary *)message responseCallback:(JSBResponseCallback)responseCallback {
     NSString *eventName = message[@"eventName"];
     if(eventName) {
@@ -175,6 +177,7 @@
                         NSInvocation *invoker   = [NSInvocation invocationWithMethodSignature:sig];
                         invoker.selector        = selector;
                         invoker.target          = jsModule;
+//                        registerEvent是在messageHandlers设置event handler
                         [self registerEvent:eventName handler:^(id data, JSBResponseCallback responseCallback) {
                             NSDictionary *configData = message[@"data"];
                             if(configData) [invoker setArgument:&configData atIndex:2];
@@ -204,6 +207,7 @@
                 }
             };
         }
+//        执行回调函数，message[@"data"]是参数
         handler(message[@"data"], responseCallback);
     } else {
         if(bridgeHandler) {
@@ -217,6 +221,7 @@
 -(void)processJSEventQueue:(UIWebView *)webView {
     NSString *messageQueueString = [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"%@.%@();",JS_BRIDGE,JS_BRIDGE_GET_JS_EVENT_QUEUE]];
     
+    //将js层面的messagequeue反序列化
     id messages = [JSBridge parseJSONArray:messageQueueString];
     if(![messages isKindOfClass:[NSArray class]]) {
         JSBLog(@"flushMessageQueue: WARNING: Invalid %@ received: %@", [messages class], messages);
@@ -231,12 +236,13 @@
         JSBLog(@"flushMessageQueue: RCVD: %@",message);
         NSString* responseId = message[@"responseId"];
         if (responseId) {
+//            responseCallbacks是native得send函数设定，和这里怎么对应呢？
             JSBResponseCallback responseCallback = responseCallbacks[responseId];
             responseCallback(message[@"responseData"]);
             [responseCallbacks removeObjectForKey:responseId];
         } else {
             JSBResponseCallback responseCallback = NULL;
-            NSString* callbackId = message[@"callbackId"];
+            NSString* callbackId = message[@"callbackId"];//callbackId是从native回调js
             if (callbackId) {
                 responseCallback = ^(id responseData) {
                     if (responseData == nil) {
@@ -244,7 +250,7 @@
                     }
                     
                     NSDictionary *msg = @{ @"responseId":callbackId, @"responseData":responseData };
-                    [self queueMessage:msg];
+                    [self queueMessage:msg];//最终会回调到js层的dispatchMessageFromNative函数
                 };
             } else {
                 responseCallback = ^(id ignoreResponseData) {
@@ -257,6 +263,7 @@
     }
 }
 
+//api是可以立马返回值的
 -(void)processJSAPIRequest:(UIWebView *)webView {
     
     NSDictionary *cData = [JSBridge parseJSON:[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"%@.%@();",JS_BRIDGE,JS_BRIDGE_GET_API_DATA]]];
@@ -323,6 +330,7 @@
     numberOfUrlRequests--;
     
     if(numberOfUrlRequests == 0) {
+        //如果jsbridge文件——也就是对象没有初始化，则需要执行一次
         if(![[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"typeof %@ == 'object'",JS_BRIDGE]] isEqualToString:@"true"]) {
             NSBundle *bundle = resourceBundle ? resourceBundle : [NSBundle mainBundle];
             NSString *filePath = [bundle pathForResource:JS_BRIDGE_FILE_NAME ofType:@"js"];
@@ -333,7 +341,7 @@
     
     if (startupMessageQueue) {
         for (id queuedMessage in startupMessageQueue) {
-            [self dispatchMessage:queuedMessage];
+            [self dispatchMessage:queuedMessage];//native发送消息给web
         }
         startupMessageQueue = nil;
     }
@@ -354,6 +362,7 @@
     if ([[url scheme] isEqualToString:JSBRIDGE_URL_SCHEME]) {
         if ([[url host] isEqualToString:JSBRIDGE_URL_MESSAGE]) {
             NSString *relativePath = [url relativePath];
+            //API和Event有何区别？
             if([relativePath isEqualToString:JSBRIDGE_URL_EVENT_REL_PATH]) {
                 [self processJSEventQueue:webView];
             } else if([relativePath isEqualToString:JSBRIDGE_URL_API_REL_PATH]) {
@@ -447,6 +456,7 @@
 
 #pragma mark - PUBLIC APIs
 
+//注意此处，webView的delegate是jsbridge，但还有个外部webView的delegate
 -(id)initWithWebView:(UIWebView*)webView webViewDelegate:(NSObject<UIWebViewDelegate>*)webViewDelegate bundle:(NSBundle*)bundle handler:(JSBHandler)handler {
     self = [super init];
     if(self) {
@@ -464,6 +474,8 @@
     return self;
 }
 
+//发送消息，从native至js
+//发送消息，消息是异步的，都有个回调函数——用callbackid对应存储在message中。发送消息指native发送给webview
 -(void)send:(NSString *)eventName data:(id)data responseCallback:(JSBResponseCallback)responseCallback {
     NSMutableDictionary* message = [NSMutableDictionary dictionary];
     
@@ -472,6 +484,7 @@
     if(eventName) message[@"eventName"] = eventName;
     
     if (responseCallback) {
+//        供js层面回调native
         NSString* callbackId = [NSString stringWithFormat:@"objc_cb_%ld", ++uniqueId];
         responseCallbacks[callbackId] = [responseCallback copy];
         message[@"callbackId"] = callbackId;

@@ -44,8 +44,8 @@
 //!!! WARNING - Should be in SYNC with Native Code defines - Begin
 #define JSBRIDGE_URL_SCHEME             @"jsbridgeurlscheme"
 #define JSBRIDGE_URL_MESSAGE            @"__JSB_URL_MESSAGE__"
-#define JSBRIDGE_URL_EVENT              @"__JSB_URL_EVENT__"
-#define JSBRIDGE_URL_API                @"__JSB_URL_API__"
+#define JSBRIDGE_URL_EVENT              @"__JSB_URL_EVENT__"//js将message放在本地queue中，让native逐个调
+#define JSBRIDGE_URL_API                @"__JSB_URL_API__"//js直接调native的api
 //!!! WARNING - Should be in SYNC with Native Code defines - End
 #define JS_BRIDGE_FILE_NAME             @"JSBridge"
 #define JS_BRIDGE                       @"JSBridge"
