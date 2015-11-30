@@ -3,23 +3,28 @@ package com.siva4u.example;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.siva4u.jsbridge.JSBridge;
 import com.siva4u.jsbridge.JSBridgeBase;
 import com.siva4u.jsbridge.JSBridgeCallback;
+import com.siva4u.main.OtherActivity;
 
 public class Test extends JSBridgeBase {
-
 	public Test(Context c, WebView view) {
 		super(c, view);
 	}
 
 	public void JSBAPI_APIOne() {
-		JSBridge.Log("Test","APIOne","START");
-        Toast.makeText(webViewContext, "Hello....", Toast.LENGTH_SHORT).show();
-	}
+		JSBridge.Log("Test", "APIOne", "START");
+//        Toast.makeText(webViewContext, "Hello....", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this.webViewContext, OtherActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.webViewContext.startActivity(intent);
+        JSBridge.Log("Test", "APIOne", "END");
+    }
 	
     public void JSBAPI_APITwo(JSONObject jsonObject) {
     	JSBridge.Log("Test","APITwo","START: "+jsonObject);

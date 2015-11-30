@@ -169,6 +169,7 @@ public class JSBridge {
     		responseCallback.callBack(getReturnObject(null,supportStatus, dataStr));
     	}
     }
+//    js层调用native后的回调
     private static JSONObject callAPICallback(final WebView wv, JSONObject inJsonObj, String outJsonObj, String supportStatus) {
     	return callAPICallbackComplete(wv, inJsonObj, JSBridge.getReturnObject(null,supportStatus, outJsonObj));
     }
@@ -184,6 +185,7 @@ public class JSBridge {
             wv.post(new Runnable() {
                 @Override
                 public void run() {
+//                    js层调用native后回调——native回调js
                 	wv.loadUrl("javascript: JSBridge._invokeJSCallback('"+callbackID+"',"+removeAfterExecute+",'"+outJsonObj.toString()+"');");
                 }
             });
@@ -280,7 +282,8 @@ public class JSBridge {
 			} catch (NoSuchMethodException e) {}
     		return thisMethod;
         }
-        
+
+        //js层面调用native
         private JSONObject invokeMethod(String type, String name, JSONObject data, JSBridgeCallback responseCallback) {
     		JSBridge.Log("JSBridge","invokeMethod", "API:"+name+", data: "+data+" and responseCallback:"+responseCallback);
     		if(name == null) return null;
@@ -303,8 +306,12 @@ public class JSBridge {
 						putKeyValue(retVal, "0","TRUE"); 
 						return retVal;
 					} catch (IllegalAccessException e) {
+                        Log(e.getMessage());
 					} catch (IllegalArgumentException e) {
-					} catch (InvocationTargetException e) {}
+                        Log(e.getMessage());
+					} catch (InvocationTargetException e) {
+                        Log(e.getMessage());
+                    }
 				}
     		}
     		
@@ -333,7 +340,8 @@ public class JSBridge {
                 }
         	}
         }
-        
+
+//        js层调用native
         @JavascriptInterface
         public String ProcessJSAPIRequest(String name, String data) {
         	JSONObject inJsonObj = getJSONObject(data);
@@ -352,7 +360,9 @@ public class JSBridge {
 	            	}
 	        		return ((retObj != null)?(retObj.toString()):(null));
 	        	}
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                JSBridge.Log("JSBridge","Android.Log",e.getMessage());
+            }
        		return callAPICallback(webView, inJsonObj, "UN-SUPPORTED API: "+name, "false").toString();
         }
         
@@ -465,6 +475,7 @@ public class JSBridge {
         if(webView != null) webView.loadUrl(url);
     }
 
+//    native发送消息给js
     public void send(String eventName, JSONObject data, JSBridgeCallback responseCallback) {
         JSONObject message = new JSONObject();
         updateJsonObject(message,"status","true");
