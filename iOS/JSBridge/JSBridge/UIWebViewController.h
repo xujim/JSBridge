@@ -30,7 +30,10 @@
 #import <UIKit/UIKit.h>
 #import "JSBridge.h"
 
-@interface ViewController : UIViewController <UIWebViewDelegate>
+@interface UIWebViewController : UIViewController <UIWebViewDelegate>
 +(JSBridge *)getJSBridgeInstance;
+
+-(void)loadHTMLFile:(NSString*)htmlPath;
+-(void)loadURL:(NSURL*)htmlUrl;
 @end
 

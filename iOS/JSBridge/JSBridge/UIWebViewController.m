@@ -27,16 +27,16 @@
 //
 //
 
-#import "ViewController.h"
+#import "UIWebViewController.h"
 
 static JSBridge *singleTonBridge = nil;
 
-@interface ViewController ()
+@interface UIWebViewController ()
 @property(nonatomic,retain) UIWebView   *jsbWebView;
 @property(nonatomic,retain) JSBridge    *bridge;
 @end
 
-@implementation ViewController
+@implementation UIWebViewController
 
 @synthesize jsbWebView;
 @synthesize bridge;
@@ -70,6 +70,19 @@ static JSBridge *singleTonBridge = nil;
     NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
     [NSHTTPCookieStorage sharedHTTPCookieStorage].cookieAcceptPolicy = NSHTTPCookieAcceptPolicyAlways;
     [jsbWebView loadHTMLString:appHtml baseURL:baseURL];
+//    [jsbWebView loadRequest:[NSURLRequest requestWithURL:baseURL]];
+}
+
+- (void)loadHTMLFile:(NSString *)htmlPath{
+    NSString* appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
+    NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
+    [NSHTTPCookieStorage sharedHTTPCookieStorage].cookieAcceptPolicy = NSHTTPCookieAcceptPolicyAlways;
+    [jsbWebView loadHTMLString:appHtml baseURL:baseURL];
+}
+
+-(void)loadURL:(NSURL *)htmlUrl{
+    [NSHTTPCookieStorage sharedHTTPCookieStorage].cookieAcceptPolicy = NSHTTPCookieAcceptPolicyAlways;
+    [jsbWebView loadRequest:[NSURLRequest requestWithURL:htmlUrl]];
 }
 
 -(void)viewDidLoad {
