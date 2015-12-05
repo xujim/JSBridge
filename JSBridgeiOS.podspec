@@ -4,18 +4,18 @@ Pod::Spec.new do |s|
   s.summary      = "JSBridge"
 
   s.description  = <<-DESC
-                   STYLEKIT1.0
+                   JSBridge1.0
                    DESC
 
   s.homepage     = ""
   s.license = {
     :type => 'Copyright',
     :text => <<-LICENSE
-           Alibaba-INC copyright
+           xujian-INC copyright
     LICENSE
   }
 
-  s.author       = { "xujian" => "xujian.xj@alibaba-inc.com" }
+  s.author       = { "xujian" => "xujian1030@gmail.com" }
 
   s.platform     = :ios
 
