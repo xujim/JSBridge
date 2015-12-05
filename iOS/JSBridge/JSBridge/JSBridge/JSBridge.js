@@ -249,8 +249,8 @@
 
     w.JSBridge = {
         init    : init.bind(this),
-        send    : send.bind(this),
-        callAPI : callAPI.bind(this),
+        send    : send.bind(this),//发送消息，异步调用
+        callAPI : callAPI.bind(this),//调用api，同步调用
   
         registerEvent   : registerEvent.bind(this),
         deRegisterEvent : deRegisterEvent.bind(this),
