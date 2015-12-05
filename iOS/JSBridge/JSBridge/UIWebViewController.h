@@ -31,9 +31,12 @@
 #import "JSBridge.h"
 
 @interface UIWebViewController : UIViewController <UIWebViewDelegate>
+@property(nonatomic,strong) NSString    *htmlFileName;
+@property(nonatomic,strong) NSString    *webUrl;
+
 +(JSBridge *)getJSBridgeInstance;
 
--(void)loadHTMLFile:(NSString*)htmlPath;
--(void)loadURL:(NSURL*)htmlUrl;
+- (void)loadHTMLFile:(NSString*)htmlFileName;
+- (void)loadWebUrl:(NSString*)webUrl;
 @end
 

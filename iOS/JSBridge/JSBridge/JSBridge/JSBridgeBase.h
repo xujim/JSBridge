@@ -28,9 +28,11 @@
 //
 
 #import "JSBridge.h"
+#import <UIKit/UIKit.h>
 
 @interface JSBridgeBase : NSObject
-@property(nonatomic,assign) JSBridge  *jsBridge;
-@property(nonatomic,assign) UIWebView *jsbWebView;
--(id)initWithJSBridge:(JSBridge *)bridge webView:(UIWebView *)webView;
+@property(nonatomic,weak) JSBridge  *jsBridge;
+@property(nonatomic,weak) UIWebView *jsbWebView;
+@property(nonatomic,weak) UIViewController *webviewController;
+-(id)initWithJSBridge:(JSBridge *)bridge webView:(UIWebView *)webView controller:(UIViewController*)controller;
 @end

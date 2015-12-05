@@ -73,20 +73,32 @@ static JSBridge *singleTonBridge = nil;
 //    [jsbWebView loadRequest:[NSURLRequest requestWithURL:baseURL]];
 }
 
-- (void)loadHTMLFile:(NSString *)htmlPath{
+- (void)loadHTMLFile:(NSString *)htmlFileName{
+    NSString* htmlPath = [[NSBundle mainBundle] pathForResource:htmlFileName.stringByDeletingPathExtension ofType:htmlFileName.pathExtension];
     NSString* appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
     NSURL *baseURL = [NSURL fileURLWithPath:htmlPath];
     [NSHTTPCookieStorage sharedHTTPCookieStorage].cookieAcceptPolicy = NSHTTPCookieAcceptPolicyAlways;
     [jsbWebView loadHTMLString:appHtml baseURL:baseURL];
 }
 
--(void)loadURL:(NSURL *)htmlUrl{
-    [NSHTTPCookieStorage sharedHTTPCookieStorage].cookieAcceptPolicy = NSHTTPCookieAcceptPolicyAlways;
-    [jsbWebView loadRequest:[NSURLRequest requestWithURL:htmlUrl]];
+- (void)loadWebUrl:(NSString*)webUrl{
+    //1
+    NSURL *url = [NSURL URLWithString:webUrl];
+    //2
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    //3
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    //4
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         if ([data length] > 0 && error == nil) [jsbWebView loadRequest:request];
+         else if (error != nil) NSLog(@"Error: %@", error);
+     }];
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view, typically from a nib.
     jsbWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     jsbWebView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |
@@ -99,7 +111,7 @@ static JSBridge *singleTonBridge = nil;
     jsbWebView.scrollView.bounces = NO;
     [self.view addSubview:jsbWebView];
     
-    bridge = [[JSBridge alloc]initWithWebView:jsbWebView webViewDelegate:self bundle:nil handler:^(id data, JSBResponseCallback responseCallback) {
+    bridge = [[JSBridge alloc]initWithWebView:jsbWebView viewController:self webViewDelegate:self bundle:nil handler:^(id data, JSBResponseCallback responseCallback) {
         JSBLog(@"ObjC received message from JS after initialization: %@", data);
         [JSBridge callEventCallback:responseCallback data:@"Response for message from ObjC"];
     }];
@@ -118,7 +130,12 @@ static JSBridge *singleTonBridge = nil;
     [bridge send:@"testJavascriptHandler" data:@{ @"foo":@"before ready" } responseCallback:nil];
     
     //加载html文件
-    [self loadIndexFile];
+//    [self loadIndexFile];
+    if (self.htmlFileName) {
+        [self loadHTMLFile:self.htmlFileName];
+    }else if(self.webUrl){
+        [self loadWebUrl:self.webUrl];
+    }
     
     [bridge send:nil data:@"A string sent from ObjC after Webview has loaded." responseCallback:nil];    
 }

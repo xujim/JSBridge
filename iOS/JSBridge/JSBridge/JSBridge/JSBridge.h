@@ -38,7 +38,7 @@
 +(void)callCallbackForWebView:(UIWebView *)wv inJSON:(NSDictionary *)inJSON outJSON:(id)outJSON;
 +(void)callEventCallback:(JSBResponseCallback)responseCallback data:(id)data;
 
--(id)initWithWebView:(UIWebView*)webView webViewDelegate:(NSObject<UIWebViewDelegate>*)webViewDelegate bundle:(NSBundle*)bundle handler:(JSBHandler)handler;
+-(id)initWithWebView:(UIWebView*)webView viewController:(UIViewController*)controller webViewDelegate:(NSObject<UIWebViewDelegate>*)webViewDelegate bundle:(NSBundle*)bundle handler:(JSBHandler)handler;
 -(void)send:(NSString *)eventName data:(id)data responseCallback:(JSBResponseCallback)responseCallback;
 -(void)registerEvent:(NSString *)eventName handler:(JSBHandler)handler;
 -(void)deRegisterEvent:(NSString *)eventName handler:(JSBHandler)handler;

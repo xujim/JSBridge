@@ -44,12 +44,13 @@
 #endif
 }
 
--(id)initWithJSBridge:(JSBridge *)bridge webView:(UIWebView *)webView {
+-(id)initWithJSBridge:(JSBridge *)bridge webView:(UIWebView *)webView controller:(UIViewController*)controller{
     self = [super init];
     if(self) {
         [self initialize];
         self.jsBridge   = bridge;
         self.jsbWebView = webView;
+        self.webviewController = controller;
     }
     return self;
 }
