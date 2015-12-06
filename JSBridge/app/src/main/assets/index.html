@@ -169,11 +169,11 @@
             testUpdateReturnValue(JSBridge.callAPI("Test.RouteMe",{"target":"https://m.taobao.com"}));
         }
         function testTwo() {
-            testUpdateRequest('JSBridge.callAPI("Test.openLogin",{"t1":"t1 Value"})');
-            testUpdateReturnValue(JSBridge.callAPI("Test.openLogin",{"target":"RouteMe://page.nx/login"}));
+            testUpdateRequest('JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/login"})');
+            testUpdateReturnValue(JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/login"}));
         }
         function testThree() {
-            testUpdateRequest('JSBridge.callAPI("Test.APIThree",{"t1":"t1 Value"})');
+            testUpdateRequest('JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/home"})');
             testUpdateReturnValue(JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/home"}));
         }
         function testFour() {
@@ -199,7 +199,7 @@
     <br>
     <button type="button" class="btn btn-primary" onclick="testOne()">PushTaobaoView</button>
     <button type="button" class="btn btn-primary" onclick="testTwo()">PushLogin</button>
-    <button type="button" class="btn btn-primary" onclick="testThree()">PushHome</button>
+    <button type="button" class="btn btn-primary" onclick="testThree()">PushWebView</button>
     <button type="button" class="btn btn-primary" onclick="testFour()">API4</button>
     <button type="button" class="btn btn-primary" onclick="testFive()">API5</button>
     <button type="button" class="btn btn-primary" onclick="testSix()">API6</button>

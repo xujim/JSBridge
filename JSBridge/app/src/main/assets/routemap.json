@@ -1,12 +1,12 @@
 {
   "home": {
-    "targetType": "UIWebViewController",
+    "targetType": "com.siva4u.main.WebViewActivity",
     "parameters": {
       "htmlFileName": "index.html"
     }
   },
   "login": {
-    "targetType": "LoginViewController",
+    "targetType": "com.siva4u.main.LoginActivity",
     "parameters": {
       "sayhello": "hello",
       "who": "login"

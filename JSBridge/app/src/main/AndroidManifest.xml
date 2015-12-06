@@ -23,15 +23,29 @@
         <activity
             android:name="com.siva4u.main.WebViewActivity"
             android:label="@string/app_name">
+
+            <intent-filter>
+                <action android:name="com.siva4u.main.webview" />
+                <action   android:name = "android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.siva4u.main.LoginActivity"
+            android:label="@string/title_activity_other"></activity>
+
+        <intent-filter>
+            <action android:name="com.siva4u.main.login" />
+            <action   android:name = "android.intent.action.DEFAULT" />
+        </intent-filter>
+        <activity
+            android:name="com.siva4u.main.MainActivity"
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.siva4u.main.OtherActivity"
-            android:label="@string/title_activity_other"></activity>
     </application>
 
 </manifest>

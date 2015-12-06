@@ -5,4 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_other">Hello other!</string>
     <string name="clickme">Hello click me!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="login">login</string>
+    <string name="webview">webview</string>
 </resources>
