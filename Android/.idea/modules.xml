@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JSBridge/JSBridge.iml" filepath="$PROJECT_DIR$/JSBridge/JSBridge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../AndroidWorkspace/appcompat_v7/appcompat_v7.iml" filepath="$PROJECT_DIR$/../AndroidWorkspace/appcompat_v7/appcompat_v7.iml" />
+    </modules>
+  </component>
+</project>

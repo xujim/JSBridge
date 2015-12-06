@@ -1,0 +1,15 @@
+{
+  "home": {
+    "targetType": "UIWebViewController",
+    "parameters": {
+      "htmlFileName": "index.html"
+    }
+  },
+  "login": {
+    "targetType": "LoginViewController",
+    "parameters": {
+      "sayhello": "hello",
+      "who": "login"
+    }
+  }
+}
