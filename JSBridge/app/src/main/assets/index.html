@@ -166,7 +166,7 @@
         }
         function testOne() {
             testUpdateRequest('JSBridge.callAPI("Test.RouteMe")');
-            testUpdateReturnValue(JSBridge.callAPI("Test.RouteMe",{"target":"https://m.taobao.com"}));
+            testUpdateReturnValue(JSBridge.callAPI("Test.RouteMe",{"target":"https://m.taobao.com?sayhello=ss"}));
         }
         function testTwo() {
             testUpdateRequest('JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/login"})');
@@ -182,7 +182,8 @@
         }
         function testFive() {
             testUpdateRequest('JSBridge.callAPI("Test.APIFive",{"t1":"t1 Value"},testLogCallBack)');
-            testUpdateReturnValue(JSBridge.callAPI("Test.APIFive",{"t1":"t1 Value"},testLogCallBack));
+            <!--testUpdateReturnValue(JSBridge.callAPI("Test.APIFive",{"t1":"t1 Value"},testLogCallBack));-->
+            JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/area?title=xxx"})
         }
         function testSix() {
             testUpdateRequest('JSBridge.callAPI("Test.APISix",{"t1":"t1 Value"},testLogCallBack)');

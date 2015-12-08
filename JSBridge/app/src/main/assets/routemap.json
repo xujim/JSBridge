@@ -11,5 +11,12 @@
       "sayhello": "hello",
       "who": "login"
     }
+  },
+  "area":{
+    "targetType":"com.nx.AreaActivity",
+    "parameters": {
+      "title": "hello"
+    }
   }
+
 }
