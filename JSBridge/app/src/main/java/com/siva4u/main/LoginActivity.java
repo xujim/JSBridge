@@ -18,9 +18,10 @@ public class LoginActivity extends ActionBarActivity {
         Intent it = this.getIntent();
         String hello = it.getStringExtra("sayhello");
         String who = it.getStringExtra("who");
+        String userName = it.getStringExtra("userName");
 
         Button mybutton = (Button)this.findViewById(R.id.mybutton);
-        mybutton.setText(hello+who);
+        mybutton.setText(hello+who+userName);
         mybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -170,7 +170,7 @@
         }
         function testTwo() {
             testUpdateRequest('JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/login"})');
-            testUpdateReturnValue(JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/login"}));
+            testUpdateReturnValue(JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/login?userName=ss"}));
         }
         function testThree() {
             testUpdateRequest('JSBridge.callAPI("Test.RouteMe",{"target":"RouteMe://page.nx/home"})');

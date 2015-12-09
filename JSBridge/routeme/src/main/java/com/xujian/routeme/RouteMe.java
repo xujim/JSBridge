@@ -3,6 +3,7 @@ package com.xujian.routeme;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 
 import com.google.gson.JsonElement;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -104,6 +106,10 @@ public class RouteMe {
             bundle.putString("htmlUrl", targetUrl);
         }else if(filePathUri.getScheme().equalsIgnoreCase("RouteMe")) {
             String file_path = filePathUri.getLastPathSegment();
+            UrlQuerySanitizer sanitizer = new UrlQuerySanitizer();
+            sanitizer.setAllowUnregisteredParamaters(true);
+            sanitizer.parseUrl(targetUrl);
+            List<UrlQuerySanitizer.ParameterValuePair> queryparams = sanitizer.getParameterList();
             JsonObject config = mRouteMap.getAsJsonObject(file_path);
             if (config != null) {
                 JsonElement targetObj = config.get("targetType");
@@ -113,6 +119,9 @@ public class RouteMe {
                 for (Map.Entry<String, JsonElement> entry : entrySet) {
                     String key = entry.getKey();
                     bundle.putString(key, params.get(key).getAsString());
+                }
+                for (UrlQuerySanitizer.ParameterValuePair pair:queryparams){
+                    bundle.putString(pair.mParameter, pair.mValue);
                 }
             }
         }
