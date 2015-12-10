@@ -143,9 +143,11 @@
 
 -(void)handleReturnValue:(NSInvocation *)invoker sig:(NSMethodSignature *)sig webView:(UIWebView *)webView apiName:(NSString *)apiName status:(BOOL)status {
     NSString *retValue = nil;
+    void* result;
     if((invoker != nil) && (sig != nil)) {
         if([sig methodReturnLength] > 0) {
-            [invoker getReturnValue:&retValue];
+            [invoker getReturnValue:&result];
+            retValue = (__bridge NSString *)result;
             if(retValue) {
                 JSBLog(@"handleReturnValue:%@",retValue);
                 retValue = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef) retValue, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));

@@ -32,8 +32,8 @@
 static JSBridge *singleTonBridge = nil;
 
 @interface UIWebViewController ()
-@property(nonatomic,retain) UIWebView   *jsbWebView;
-@property(nonatomic,retain) JSBridge    *bridge;
+@property(nonatomic,strong) UIWebView   *jsbWebView;
+@property(nonatomic,strong) JSBridge    *bridge;
 @end
 
 @implementation UIWebViewController
